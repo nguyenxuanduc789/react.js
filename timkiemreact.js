@@ -16,18 +16,30 @@ class App extends Component {
      dulieu1:dl
    })
  }
-
+              themmoi=(id,name,age)=>{
+                  console.log("nguyen xuan duc hello !")
+                                let item=[]
+                                item.id=id
+                                item.name=name
+                                item.age=age
+                                var items=this.state.data
+                                items.push(item)
+                                console.log(items)
+                                    this.setState({
+                                      data: items
+                                    })
+                               
+}
   render() {
     var ketqua=[];
         this.state.data.forEach((item)=>{
-        if(item.ten.indexOf(this.state.dulieu1) !== -1){
+        if(item.name.indexOf(this.state.dulieu1) !== -1){
           ketqua.push(item)
         }
     })
-    console.log(ketqua)
     return (
     <div className="App">
-       <Seach onchecks={(dl)=>this.oncheck(dl)}  />
+       <Seach onchecks={(dl)=>this.oncheck(dl)}  adds={(id,name,age)=>this.themmoi(id,name,age)} />
       <From tieude={ketqua}/>
     </div>
     );
@@ -42,7 +54,10 @@ class Seach extends Component {
     constructor(props) {
         super(props)
           this.state={
-           dulieu:'', 
+           dulieu:'',
+           id:'',
+           name:'',
+           age:''
           }
       }
     timkiem=(even) => {
@@ -50,7 +65,14 @@ class Seach extends Component {
         this.setState({
         dulieu:even.target.value    
     })
-          this.props.onchecks(this.state.dulieu)
+    this.props.onchecks(this.state.dulieu)
+}
+add= (event) =>{
+    const name=event.target.name
+    const value=event.target.value
+    this.setState({
+        [name]:value
+    })
 }
 
     render() { 
@@ -61,20 +83,19 @@ class Seach extends Component {
                 <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" onChange={(even)=>this.timkiem(even)}/>
                 <button onClick={() =>this.props.onchecks(this.state.dulieu)}>Timkiem</button>
             </div>
-        <div className="input-group mb-3">
-          <input type="text"   name="ten" className="form-control"  />
-        </div>
-        <div className="input-group input-group-lg">
-  
-          <input type="text" name="age" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
-          <button>them</button>
-        </div>
+                <div className="input-group mb-3">
+                    <input type="text"   name="ten" className="form-control"  name="name"  onChange={(event)=>this.add(event)} />
+                </div>
+                    <div className="input-group input-group-lg">
+                    <input type="text" name="age" className="form-control" name="age"  onChange={(event)=>this.add(event)} />
+                <button  onClick={(id,name,age)=>this.props.adds(this.state.id,this.state.name, this.state.age)}>them</button>
+                </div>
             </div>
         ); 
     }
 }
 export default Seach;
-//==============danhsach=========
+//=========from
 import React, { Component } from 'react';
 
 class From extends Component {
@@ -84,7 +105,7 @@ run=()=>(
         <div className="container">
         <div className="row">
             <div className="col-6 col-sm-3">{value.id}</div>
-          <div className="col-6 col-sm-3">{value.ten}</div>
+          <div className="col-6 col-sm-3">{value.name}</div>
           <div className="col-6 col-sm-3">{value.age}</div>
         </div>
       </div>
