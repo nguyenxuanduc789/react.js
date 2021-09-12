@@ -50,6 +50,7 @@ class Seach extends Component {
         this.setState({
         dulieu:even.target.value    
     })
+          this.props.onchecks(this.state.dulieu)
 }
 
     render() { 
